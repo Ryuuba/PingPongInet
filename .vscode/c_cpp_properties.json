@@ -1,0 +1,21 @@
+{
+    "configurations": [
+        {
+            "name": "Linux",
+            "includePath": [
+                "${workspaceFolder}/**",
+                "~/omnetpp-5.5.1/include/**",
+                "~/inet4/src/inet/**",
+                "~/inet4/src/**",
+                "/home/geo/omnetpp-5.5.1/include"
+            ],
+            "defines": [],
+            "compilerPath": "/usr/bin/gcc",
+            "cStandard": "c11",
+            "cppStandard": "c++17",
+            "intelliSenseMode": "clang-x64",
+            "compilerArgs": []
+        }
+    ],
+    "version": 4
+}

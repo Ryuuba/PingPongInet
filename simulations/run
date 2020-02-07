@@ -1,0 +1,4 @@
+#!/bin/sh
+cd `dirname $0`
+../src/dispatchertest -n .:../src $*
+# for shared lib, use: opp_run -l ../src/dispatchertest -n .:../src $*
