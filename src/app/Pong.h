@@ -19,16 +19,18 @@
 #include <omnetpp/csimplemodule.h>
 #include "inet/common/INETDefs.h"
 #include "inet/common/packet/Packet.h"
+#include "../msg/PingPong_m.h"
 
 class Pong: public omnetpp::cSimpleModule {
 protected:
   omnetpp::cMessage* timer;
+  inet::PingPongPacket* req;
   omnetpp::simtime_t pong_delay;
   enum status {INFO=0, NO_INFO};
   status node_status;
-  int input_gate_id, output_gate_id, msg_counter;
+  int input_gate_id, output_gate_id, msg_counter, packet_size, seq;
 protected:
-  virtual void send_packet();
+  virtual void send_packet( );
   virtual void process_ping(omnetpp::cMessage*);
 public:
     Pong();
