@@ -16,7 +16,9 @@
 #include "Pong.h"
 #include "inet/common/IProtocolRegistrationListener.h"
 
-Pong::Pong() : timer(nullptr), msg_counter(0)
+Define_Module(Pong);
+
+Pong::Pong() : timer(nullptr), msg_counter(0), seq(0)
 {
 
 }
@@ -27,14 +29,17 @@ Pong::~Pong()
 }
 
 void Pong::initialize(int stage) {
+  cSimpleModule::initialize(stage);
   if (stage == inet::INITSTAGE_APPLICATION_LAYER) {
-    inet::registerService(inet::Protocol::Pong, nullptr, gate("dispatcherIn"));
-    inet::registerProtocol(inet::Protocol::Pong, gate("dispatcherOut"), nullptr);
+    inet::registerService(inet::Protocol::pong, gate("inputPort"), nullptr);
+    inet::registerProtocol(inet::Protocol::pong, gate("outputPort"), nullptr);
     input_gate_id = gate("inputPort")->getId();
     output_gate_id = gate("outputPort")->getId();
-    pong_delay = par("pong_Interval");
+    pong_delay = par("pongInterval");
     packet_size = par("packetSize");
     node_status = NO_INFO;
+    timer = new omnetpp::cMessage;
+    WATCH(node_status);
   }
 }
 
@@ -53,8 +58,12 @@ void Pong::handleMessage(omnetpp::cMessage* msg) {
       throw omnetpp::cRuntimeError("Pong: unknown timer\n");
       break;
     }
-  else if(msg->arrivedOn(input_gate_id))
+  else if(msg->arrivedOn(input_gate_id)) {
     process_ping(msg);
+    scheduleAt(omnetpp::simTime() + pong_delay, timer);
+    node_status = INFO;
+  }
+
 }
 
 void Pong::send_packet( ) {
@@ -64,15 +73,17 @@ void Pong::send_packet( ) {
   pong_reply->setChunkLength(inet::B(packet_size));
   pong_reply->setType(inet::PONG);
   pong_reply->setIdentifier(555);
-  pong_reply->setSeqNumber(++seq);
+  pong_reply->setSeqNumber(seq++);
   pong_pkt->insertAtBack(pong_reply);
-  
+  // set sending protocol
+  pong_pkt->addTagIfAbsent<inet::DispatchProtocolReq>()->setProtocol(&inet::Protocol::ping);
+  // determine receiving gate
+  pong_pkt->addTagIfAbsent<inet::DispatchProtocolReq>()->setServicePrimitive(inet::SP_RESPONSE);
+  //This tag specifies the protocol of the packet.
+  pong_pkt->addTagIfAbsent<inet::PacketProtocolTag>()->setProtocol(&inet::Protocol::ping);
+  send(pong_pkt, output_gate_id);
 }
 
 void Pong::process_ping(omnetpp::cMessage* msg) {
-  req = inet::check_and_cast<inet::PingPongPacket*>(msg);
-  seq = req->getSeqNumber();
-  scheduleAt(omnetpp::simTime() + pong_delay, timer);
-  node_status = INFO;
-
+  delete msg;
 }

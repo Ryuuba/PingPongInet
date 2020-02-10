@@ -1,5 +1,5 @@
 //
-// Generated file, do not edit! Created by nedtool 5.5 from PingPong.msg.
+// Generated file, do not edit! Created by nedtool 5.5 from msg/PingPong.msg.
 //
 
 #ifndef __INET_PINGPONG_M_H
@@ -30,7 +30,7 @@ class PingPongPacket;
 namespace inet {
 
 /**
- * Enum generated from <tt>PingPong.msg:27</tt> by nedtool.
+ * Enum generated from <tt>msg/PingPong.msg:27</tt> by nedtool.
  * <pre>
  * //
  * // Generic network protocol packet for testing network connectivity.
@@ -48,7 +48,7 @@ enum PingPongMessageType {
 };
 
 /**
- * Class generated from <tt>PingPong.msg:33</tt> by nedtool.
+ * Class generated from <tt>msg/PingPong.msg:33</tt> by nedtool.
  * <pre>
  * class PingPongPacket extends FieldsChunk
  * {

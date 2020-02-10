@@ -36,4 +36,10 @@
 		<nature>org.eclipse.cdt.managedbuilder.core.ScannerConfigNature</nature>
 		<nature>org.omnetpp.main.omnetppnature</nature>
 	</natures>
+	<variableList>
+		<variable>
+			<name>INET_LOC</name>
+			<value>file:/home/geo/inet4/src/inet</value>
+		</variable>
+	</variableList>
 </projectDescription>

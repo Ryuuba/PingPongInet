@@ -1,3 +1,7 @@
+INETDIR = $(HOME)/inet4
+
+BUILD_OPTIONS = -f --deep -I$(INETDIR)/src/ -I$(INETDIR)/src/inet/common/ -L$(INETDIR)/out/gcc-release/src/ -lINET -o pingpong
+
 all: checkmakefiles
 	cd src && $(MAKE)
 
@@ -10,7 +14,7 @@ cleanall: checkmakefiles
 	rm -f src/Makefile
 
 makefiles:
-	cd src && opp_makemake -f --deep
+	cd src && opp_makemake $(BUILD_OPTIONS)
 
 checkmakefiles:
 	@if [ ! -f src/Makefile ]; then \

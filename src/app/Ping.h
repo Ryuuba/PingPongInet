@@ -13,25 +13,34 @@
 // along with this program.  If not, see http://www.gnu.org/licenses/.
 // 
 
-#ifndef APP_PING_H_
-#define APP_PING_H_
+#ifndef APP_PONG_H_
+#define APP_PONG_H_
 
 #include <omnetpp/csimplemodule.h>
 #include "inet/common/INETDefs.h"
 #include "inet/common/packet/Packet.h"
+#include "../msg/PingPong_m.h"
 
 class Ping: public omnetpp::cSimpleModule {
 protected:
   omnetpp::cMessage* timer;
+  inet::PingPongPacket* rep;
+  omnetpp::simtime_t ping_delay;
+  enum status {INFO=0, NO_INFO};
+  status node_status;
+  int input_gate_id, output_gate_id, msg_counter, packet_size, seq;
+protected:
+  virtual void send_packet( );
+  virtual void process_pong(omnetpp::cMessage*);
 public:
-  Ping();
-  virtual ~Ping();
-  /** @brief Initialization of omnetpp.ini parameters*/
-  virtual int numInitStages() const override {
+    Ping();
+    virtual ~Ping();
+    /** @brief Initialization of omnetpp.ini parameters*/
+    virtual int numInitStages() const override {
       return inet::NUM_INIT_STAGES;
-  }
-  virtual void initialize(int) override;
-  virtual void handleMessage(omnetpp::cMessage*) override;
+    }
+    virtual void initialize(int) override;
+    virtual void handleMessage(omnetpp::cMessage*) override;
 };
 
-#endif /* APP_PING_H_ */
+#endif /* APP_PONG_H_ */
