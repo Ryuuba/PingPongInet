@@ -13,8 +13,8 @@
 // along with this program.  If not, see http://www.gnu.org/licenses/.
 // 
 
-#ifndef APP_PONG_H_
-#define APP_PONG_H_
+#ifndef APP_PING_H_
+#define APP_PING_H_
 
 #include <omnetpp/csimplemodule.h>
 #include "inet/common/INETDefs.h"
